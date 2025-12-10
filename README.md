@@ -1,10 +1,23 @@
-Requirements:
+## 🛠️ Installation et Configuration
 
-Un .env avec:
+### 1. Variables d'environnement
 
+Créez un fichier `.env` à la racine du projet avec le contenu suivant :
+
+```env
 REACT_APP_API_PROXY=http://localhost
 DANGEROUSLY_DISABLE_HOST_CHECK=true
 HOST=localhost
+```
 
-Avoir le docker de l'ia lancé en local sur le port 80.
-Si docker est lancé sur un autre port, il faut modifier la variable REACT_APP_API_PROXY, et lui ajouter :<PORT> à la fin
+### 2. Prérequis Docker
+
+Le conteneur Docker de l'IA doit être lancé localement sur le port **80**.
+
+> **⚠️ Port personnalisé**
+>
+> Si Docker tourne sur un autre port (ex: `8080`), modifiez la variable `REACT_APP_API_PROXY` en ajoutant le port à la fin :
+>
+> ```env
+> REACT_APP_API_PROXY=http://localhost:8080
+> ```
