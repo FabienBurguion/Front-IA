@@ -1,10 +1,6 @@
 const API_URL = "/image";
 const PREDICTION_KEY = process.env.REACT_APP_PREDICTION_KEY || "MA_SUPER_CLEF_LOCALE";
 
-if (!API_URL) {
-    // eslint-disable-next-line no-console
-    console.warn("REACT_APP_PREDICTION_API_URL n'est pas définie dans .env");
-}
 if (!PREDICTION_KEY) {
     // eslint-disable-next-line no-console
     console.warn("REACT_APP_PREDICTION_KEY n'est pas définie dans .env");

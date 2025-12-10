@@ -2,7 +2,6 @@ Requirements:
 
 Un .env avec:
 
-REACT_APP_PREDICTION_API_URL=/image
 DANGEROUSLY_DISABLE_HOST_CHECK=true
 HOST=localhost
 
