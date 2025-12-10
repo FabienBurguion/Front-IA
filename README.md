@@ -7,4 +7,4 @@ DANGEROUSLY_DISABLE_HOST_CHECK=true
 HOST=localhost
 
 Avoir le docker de l'ia lancé en local sur le port 80.
-Si ce n'est pas le cas, update la variable REACT_APP_API_PROXY, et lui ajouter :<PORT>
+Si docker est lancé sur un autre port, il faut modifier la variable REACT_APP_API_PROXY, et lui ajouter :<PORT> à la fin
