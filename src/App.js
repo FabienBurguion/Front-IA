@@ -111,7 +111,7 @@ function App() {
       <div className="app-root">
         <div className="app-card">
           <header className="app-header">
-            <h1>Détection d’images fake</h1>
+            <h1>Reconnaissance d’Œuvres Générées par IA</h1>
             <p>Utilisez une URL ou un fichier local pour analyser une image avec votre IA.</p>
           </header>
 
