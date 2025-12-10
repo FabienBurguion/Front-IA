@@ -65,7 +65,7 @@ function App() {
           <header className="app-header">
             <h1>Détection d’images fake</h1>
             <p>
-              Envoyez une image pour interroger votre IA (Docker + Custom Vision en local).
+              Envoyez une image pour interroger notre IA Custom Vision.
             </p>
           </header>
 
