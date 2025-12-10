@@ -4,6 +4,15 @@ import ImageUploader from "./components/ImageUploader";
 import ResultPanel from "./components/ResultPanel";
 import { predictImage, predictImageFromUrl } from "./api/predictionClient";
 
+function isValidHttpUrl(value) {
+  try {
+    const url = new URL(value);
+    return url.protocol === "http:" || url.protocol === "https:" || url.protocol === "data:";
+  } catch {
+    return false;
+  }
+}
+
 function App() {
   const [file, setFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
@@ -12,8 +21,9 @@ function App() {
   const [result, setResult] = useState(null);
   const [error, setError] = useState(null);
 
+  const urlIsValid = imageUrl && isValidHttpUrl(imageUrl.trim());
+
   const handleImageSelected = (selectedFile) => {
-    setFile(selectedFile);
     setResult(null);
     setError(null);
 
@@ -22,38 +32,38 @@ function App() {
     }
 
     if (selectedFile) {
+      setFile(selectedFile);
       setPreviewUrl(URL.createObjectURL(selectedFile));
       setImageUrl("");
     } else {
+      setFile(null);
       setPreviewUrl(null);
     }
   };
 
   const handleImageUrlChange = (value) => {
     setImageUrl(value);
-    setError(null);
     setResult(null);
-    // si on tape une URL, on oublie le fichier
+    setError(null);
+
+    // Si l'utilisateur tape une URL, on oublie le fichier local
     if (file) {
       setFile(null);
-      if (previewUrl) {
+      if (previewUrl && previewUrl.startsWith("blob:")) {
         URL.revokeObjectURL(previewUrl);
       }
-      setPreviewUrl(null);
     }
-  };
 
-  const handleLoadPreviewFromUrl = () => {
-    if (!imageUrl || !imageUrl.trim()) {
-      setError("Veuillez renseigner une URL d'image valide.");
-      return;
+    const trimmed = value.trim();
+    if (trimmed && isValidHttpUrl(trimmed)) {
+      // URL OK → on affiche l’aperçu directement
+      setPreviewUrl(trimmed);
+    } else {
+      // URL vide ou invalide → pas d’aperçu (ou on garde celui du fichier si existait)
+      if (!file) {
+        setPreviewUrl(null);
+      }
     }
-    setError(null);
-    setFile(null);
-    if (previewUrl) {
-      URL.revokeObjectURL(previewUrl);
-    }
-    setPreviewUrl(imageUrl.trim());
   };
 
   const handlePredict = async () => {
@@ -66,10 +76,10 @@ function App() {
 
       if (file) {
         prediction = await predictImage(file);
-      } else if (imageUrl && imageUrl.trim()) {
+      } else if (urlIsValid) {
         prediction = await predictImageFromUrl(imageUrl);
       } else {
-        throw new Error("Veuillez sélectionner une image ou fournir une URL.");
+        throw new Error("Veuillez sélectionner une image ou fournir une URL valide.");
       }
 
       if (!prediction || !Array.isArray(prediction.predictions)) {
@@ -82,7 +92,8 @@ function App() {
 
       const percent = Math.round(best.probability * 100);
       const tag = (best.tagName || "").toLowerCase();
-      const isFake = tag.includes("fake");
+      const isFake =
+          tag.includes("fake") || tag.includes("synthetic") || tag.includes("ai");
 
       setResult({
         percent,
@@ -101,7 +112,7 @@ function App() {
         <div className="app-card">
           <header className="app-header">
             <h1>Détection d’images fake</h1>
-            <p>Uploadez une image ou utilisez une URL pour interroger notre IA.</p>
+            <p>Utilisez une URL ou un fichier local pour analyser une image avec votre IA.</p>
           </header>
 
           <ImageUploader
@@ -109,13 +120,13 @@ function App() {
               onImageSelected={handleImageSelected}
               imageUrl={imageUrl}
               onImageUrlChange={handleImageUrlChange}
-              onLoadPreviewFromUrl={handleLoadPreviewFromUrl}
+              urlIsValid={urlIsValid}
           />
 
           <button
               className="app-button"
               onClick={handlePredict}
-              disabled={loading || (!file && !imageUrl.trim())}
+              disabled={loading || (!file && !urlIsValid)}
           >
             {loading ? "Analyse en cours..." : "Lancer la prédiction"}
           </button>

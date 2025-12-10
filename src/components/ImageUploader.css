@@ -5,6 +5,8 @@
     gap: 10px;
 }
 
+/* Barre URL */
+
 .uploader-url-bar {
     padding: 12px 14px;
     border-radius: 16px;
@@ -52,30 +54,12 @@
     background: rgba(15, 23, 42, 0.95);
 }
 
-.uploader-url-button {
-    padding: 8px 14px;
-    border-radius: 999px;
-    border: none;
-    font-size: 0.85rem;
-    font-weight: 600;
-    cursor: pointer;
-    background: linear-gradient(90deg, #3b82f6, #a855f7);
-    color: #f9fafb;
-    white-space: nowrap;
-    transition:
-            background-position 0.3s ease,
-            transform 0.08s ease,
-            box-shadow 0.12s ease;
-    background-size: 200% 200%;
-}
+/* État d'URL invalide */
 
-.uploader-url-button:hover {
-    background-position: 100% 0;
-    box-shadow: 0 0 16px rgba(129, 140, 248, 0.6);
-}
-
-.uploader-url-button:active {
-    transform: scale(0.97);
+.uploader-url-input--invalid {
+    border-color: rgba(248, 113, 113, 0.75);
+    box-shadow: 0 0 0 1px rgba(248, 113, 113, 0.6);
+    background: rgba(24, 11, 15, 0.95);
 }
 
 .uploader-url-hint {
@@ -83,6 +67,20 @@
     font-size: 0.8rem;
     color: #9ca3af;
 }
+
+.uploader-url-hint--error {
+    color: #fecaca;
+}
+
+.uploader-url-hint--error code {
+    font-size: 0.78rem;
+    background: rgba(15, 23, 42, 0.9);
+    padding: 1px 6px;
+    border-radius: 999px;
+    border: 1px solid rgba(248, 250, 252, 0.12);
+}
+
+/* Zone cliquable / drag & drop */
 
 .uploader-dropzone {
     width: 100%;
@@ -110,6 +108,7 @@
     overflow: hidden;
 }
 
+/* scan line */
 .uploader-dropzone::before {
     content: "";
     position: absolute;

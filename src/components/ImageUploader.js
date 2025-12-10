@@ -6,7 +6,7 @@ function ImageUploader({
                            onImageSelected,
                            imageUrl,
                            onImageUrlChange,
-                           onLoadPreviewFromUrl,
+                           urlIsValid,
                        }) {
     const [isHovering, setIsHovering] = useState(false);
 
@@ -54,29 +54,38 @@ function ImageUploader({
         onImageUrlChange(e.target.value);
     };
 
+    const showInvalidUrl =
+        imageUrl && imageUrl.trim().length > 0 && !urlIsValid;
+
     return (
         <div className="uploader-wrapper">
-            {/* Barre URL */}
+            {/* Barre URL futuriste */}
             <div className="uploader-url-bar">
                 <div className="uploader-url-label">URL de l’image</div>
                 <div className="uploader-url-input-row">
                     <input
                         type="text"
-                        className="uploader-url-input"
+                        className={
+                            showInvalidUrl
+                                ? "uploader-url-input uploader-url-input--invalid"
+                                : "uploader-url-input"
+                        }
                         placeholder="https://exemple.com/mon-image.jpg"
                         value={imageUrl}
                         onChange={onUrlInputChange}
                     />
-                    <button
-                        type="button"
-                        className="uploader-url-button"
-                        onClick={onLoadPreviewFromUrl}
-                    >
-                        Charger
-                    </button>
                 </div>
                 <div className="uploader-url-hint">
-                    Vous pouvez soit fournir une URL, soit utiliser le drag & drop ci-dessous.
+                    {showInvalidUrl ? (
+                        <span className="uploader-url-hint--error">
+              URL invalide ou incomplète. Assurez-vous qu’elle commence par{" "}
+                            <code>http://</code> ou <code>https://</code>.
+            </span>
+                    ) : (
+                        <span>
+              Collez une URL d’image accessible publiquement ou utilisez le drag & drop ci-dessous.
+            </span>
+                    )}
                 </div>
             </div>
 
