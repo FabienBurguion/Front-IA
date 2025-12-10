@@ -1,23 +1,10 @@
 const API_URL = "/image";
-const PREDICTION_KEY = process.env.REACT_APP_PREDICTION_KEY || "MA_SUPER_CLEF_LOCALE";
-
-if (!PREDICTION_KEY) {
-    // eslint-disable-next-line no-console
-    console.warn("REACT_APP_PREDICTION_KEY n'est pas définie dans .env");
-}
 
 export async function predictImage(file) {
-    if (!API_URL) {
-        throw new Error("L'URL de l'API de prédiction n'est pas configurée.");
-    }
-    if (!PREDICTION_KEY) {
-        throw new Error("La Prediction-Key n'est pas configurée.");
-    }
 
     const response = await fetch(API_URL, {
         method: "POST",
         headers: {
-            "Prediction-Key": PREDICTION_KEY,
             "Content-Type": "application/octet-stream",
         },
         body: file,
