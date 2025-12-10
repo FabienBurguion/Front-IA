@@ -20,7 +20,7 @@ function ResultPanel({ result }) {
         </span>
             </div>
             <div className="result-caption">
-                Votre image à {result.percent}% de chance d'être {text}, selon notre modèle d'IA.
+                Votre image à {result.percent}% de chances d'être {text}, selon notre modèle d'IA.
             </div>
         </div>
     );
