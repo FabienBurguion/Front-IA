@@ -1,0 +1,24 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+  "Segoe UI", sans-serif;
+}
+
+body {
+  color: #e5e7eb;
+  background:
+          radial-gradient(circle at 0% 0%, #1d4ed8 0, transparent 55%),
+          radial-gradient(circle at 100% 100%, #0ea5e9 0, transparent 55%),
+          radial-gradient(circle at 100% 0%, #a855f7 0, transparent 45%),
+          #020617;
+}

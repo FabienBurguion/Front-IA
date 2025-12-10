@@ -1,0 +1,64 @@
+.result-box {
+    margin-top: 20px;
+    padding: 14px 16px;
+    border-radius: 16px;
+    background: radial-gradient(circle at top left, #020617 0, #020617 60%);
+    border: 1px solid rgba(148, 163, 184, 0.55);
+    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.85);
+    font-size: 0.95rem;
+}
+
+.result-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: #9ca3af;
+}
+
+.result-main {
+    margin-top: 6px;
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+
+.result-percent {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: #e5e7eb;
+}
+
+.result-text {
+    font-size: 0.95rem;
+    color: #cbd5f5;
+}
+
+.result-pill {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    margin-left: 6px;
+    font-weight: 600;
+    border: 1px solid transparent;
+}
+
+.result-pill--fake {
+    background: rgba(248, 113, 113, 0.1);
+    border-color: rgba(248, 113, 113, 0.6);
+    color: #fecaca;
+}
+
+.result-pill--real {
+    background: rgba(52, 211, 153, 0.08);
+    border-color: rgba(52, 211, 153, 0.6);
+    color: #bbf7d0;
+}
+
+.result-caption {
+    margin-top: 6px;
+    font-size: 0.84rem;
+    color: #9ca3af;
+}
