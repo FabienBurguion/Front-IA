@@ -92,8 +92,7 @@ function App() {
 
       const percent = Math.round(best.probability * 100);
       const tag = (best.tagName || "").toLowerCase();
-      const isFake =
-          tag.includes("fake") || tag.includes("synthetic") || tag.includes("ai");
+      const isFake = tag.includes("fake");
 
       setResult({
         percent,
