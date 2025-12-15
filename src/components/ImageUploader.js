@@ -18,7 +18,7 @@ function ImageUploader({
         }
 
         if (!selected.type.startsWith("image/")) {
-            alert("Veuillez sélectionner un fichier image (JPEG, PNG…).");
+            alert("Please select an image file (JPEG, PNG...).");
             onImageSelected(null);
             return;
         }
@@ -33,7 +33,7 @@ function ImageUploader({
         if (event.dataTransfer.files && event.dataTransfer.files.length > 0) {
             const selected = event.dataTransfer.files[0];
             if (!selected.type.startsWith("image/")) {
-                alert("Veuillez déposer un fichier image (JPEG, PNG…).");
+                alert("Please drop an image file (JPEG, PNG...).");
                 return;
             }
             onImageSelected(selected);
@@ -59,9 +59,9 @@ function ImageUploader({
 
     return (
         <div className="uploader-wrapper">
-            {/* Barre URL futuriste */}
+            {/* Clean URL Bar */}
             <div className="uploader-url-bar">
-                <div className="uploader-url-label">URL de l’image</div>
+                <div className="uploader-url-label">Image URL</div>
                 <div className="uploader-url-input-row">
                     <input
                         type="text"
@@ -70,7 +70,7 @@ function ImageUploader({
                                 ? "uploader-url-input uploader-url-input--invalid"
                                 : "uploader-url-input"
                         }
-                        placeholder="https://exemple.com/mon-image.jpg"
+                        placeholder="https://example.com/fresh-fruit.jpg"
                         value={imageUrl}
                         onChange={onUrlInputChange}
                     />
@@ -78,18 +78,17 @@ function ImageUploader({
                 <div className="uploader-url-hint">
                     {showInvalidUrl ? (
                         <span className="uploader-url-hint--error">
-              URL invalide ou incomplète. Assurez-vous qu’elle commence par{" "}
-                            <code>http://</code> ou <code>https://</code>.
+              Invalid URL. Ensure it starts with <code>http://</code> or <code>https://</code>.
             </span>
                     ) : (
                         <span>
-              Collez une URL d’image accessible publiquement ou utilisez le drag & drop ci-dessous.
+              Paste a public image URL or use the drag & drop zone below.
             </span>
                     )}
                 </div>
             </div>
 
-            {/* Zone drag & drop / fichier local */}
+            {/* Dropzone */}
             <label
                 className={
                     isHovering
@@ -109,17 +108,17 @@ function ImageUploader({
 
                 {previewUrl ? (
                     <>
-                        <div className="uploader-title">Aperçu de l’image</div>
+                        <div className="uploader-title">Image Preview</div>
                         <img src={previewUrl} alt="preview" className="uploader-preview" />
                         <div className="uploader-hint">
-                            Cliquez ou déposez une autre image pour changer.
+                            Click or drop another image to change.
                         </div>
                     </>
                 ) : (
                     <>
-                        <div className="uploader-title">Glissez-déposez une image</div>
+                        <div className="uploader-title">Drag & Drop an image</div>
                         <div className="uploader-subtitle">
-                            ou cliquez ici pour choisir un fichier (JPEG, PNG…)
+                            or click here to select a file (JPEG, PNG...)
                         </div>
                     </>
                 )}

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./App.css";
+// I assume these components still exist in your project
 import ImageUploader from "./components/ImageUploader";
 import ResultPanel from "./components/ResultPanel";
 import { predictImage, predictImageFromUrl } from "./api/predictionClient";
@@ -46,7 +47,6 @@ function App() {
     setResult(null);
     setError(null);
 
-    // Si l'utilisateur tape une URL, on oublie le fichier local
     if (file) {
       setFile(null);
       if (previewUrl && previewUrl.startsWith("blob:")) {
@@ -56,10 +56,8 @@ function App() {
 
     const trimmed = value.trim();
     if (trimmed && isValidHttpUrl(trimmed)) {
-      // URL OK → on affiche l’aperçu directement
       setPreviewUrl(trimmed);
     } else {
-      // URL vide ou invalide → pas d’aperçu (ou on garde celui du fichier si existait)
       if (!file) {
         setPreviewUrl(null);
       }
@@ -79,28 +77,42 @@ function App() {
       } else if (urlIsValid) {
         prediction = await predictImageFromUrl(imageUrl);
       } else {
-        throw new Error("Veuillez sélectionner une image ou fournir une URL valide.");
+        throw new Error("Please select a file or enter a valid URL.");
       }
 
       if (!prediction || !Array.isArray(prediction.predictions)) {
-        throw new Error("Réponse inattendue de l'API de prédiction.");
+        throw new Error("Unexpected response from the Vision API.");
       }
 
-      const best = prediction.predictions.reduce((acc, cur) =>
-          cur.probability > acc.probability ? cur : acc
+      // 1. On trie du plus probable au moins probable
+      const sortedPredictions = prediction.predictions.sort(
+          (a, b) => b.probability - a.probability
       );
 
-      const percent = Math.round(best.probability * 100);
-      const tag = (best.tagName || "").toLowerCase();
-      const isFake = tag.includes("fake");
+      // 2. On garde ceux > 2% (0.02)
+      const relevantPredictions = sortedPredictions.filter(
+          (p) => p.probability > 0.02
+      );
 
-      setResult({
-        percent,
-        isFake,
-      });
+      // 3. On formate les données pour l'affichage
+      const formattedResults = relevantPredictions.map((p) => ({
+        name: p.tagName,
+        probability: Math.round(p.probability * 100),
+      }));
+
+      // Si aucun résultat > 2%, on prend quand même le meilleur (même si très bas)
+      if (formattedResults.length === 0 && sortedPredictions.length > 0) {
+        const best = sortedPredictions[0];
+        formattedResults.push({
+          name: best.tagName,
+          probability: Math.round(best.probability * 100)
+        });
+      }
+
+      setResult(formattedResults); // On envoie un tableau maintenant
     } catch (e) {
       console.error(e);
-      setError(e.message || "Une erreur est survenue pendant la prédiction.");
+      setError(e.message || "An error occurred during analysis.");
     } finally {
       setLoading(false);
     }
@@ -110,8 +122,8 @@ function App() {
       <div className="app-root">
         <div className="app-card">
           <header className="app-header">
-            <h1>Reconnaissance d’Œuvres Générées par IA</h1>
-            <p>Utilisez une URL ou un fichier local pour analyser une image avec votre IA.</p>
+            <h1>Fruit Detector 🍎</h1>
+            <p>Upload an image or paste a URL to identify fruits and vegetables.</p>
           </header>
 
           <ImageUploader
@@ -127,11 +139,12 @@ function App() {
               onClick={handlePredict}
               disabled={loading || (!file && !urlIsValid)}
           >
-            {loading ? "Analyse en cours..." : "Lancer la prédiction"}
+            {loading ? "Analyzing Nature..." : "Identify Produce"}
           </button>
 
           {error && <div className="app-error">{error}</div>}
 
+          {/* Ensure ResultPanel can handle { name, probability } props */}
           <ResultPanel result={result} />
         </div>
       </div>
