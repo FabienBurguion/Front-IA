@@ -125,3 +125,69 @@
   font-size: 0.9rem;
   border-left: 4px solid #ef4444;
 }
+
+/* --- Header Layout --- */
+.app-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 10px;
+}
+
+.app-header-text h1 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin: 0 0 4px;
+  color: #166534;
+  letter-spacing: -0.02em;
+}
+
+.app-header-text p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #64748b;
+}
+
+.divider {
+  border: none;
+  border-top: 1px solid #e2e8f0;
+  margin-bottom: 24px;
+}
+
+/* --- Boutons Nav --- */
+.nav-btn {
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s;
+}
+
+.login-btn {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.login-btn:hover {
+  background: #bbf7d0;
+}
+
+.logout-btn {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.logout-btn:hover {
+  background: #fecaca;
+}
+
+/* Bouton Spécial Azure (Bleuté pour différencier) */
+.app-button-azure {
+  background: linear-gradient(135deg, #0284c7 0%, #0ea5e9 100%);
+  box-shadow: 0 4px 6px -1px rgba(2, 132, 199, 0.2);
+}
+.app-button-azure:not(:disabled):hover {
+  box-shadow: 0 10px 15px -3px rgba(2, 132, 199, 0.3);
+}

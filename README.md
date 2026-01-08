@@ -6,8 +6,6 @@ Créez un fichier `.env` à la racine du projet avec le contenu suivant :
 
 ```env
 REACT_APP_API_PROXY=http://localhost
-DANGEROUSLY_DISABLE_HOST_CHECK=true
-HOST=localhost
 ```
 
 ### 2. Prérequis Docker
