@@ -113,3 +113,22 @@ export async function predictImageFromUrlAzure(imageUrl) {
     if (!response.ok) throw new Error("Erreur Azure Cloud (URL)");
     return await response.json();
 }
+
+// --- CHATBOT LLM (Local 8000) ---
+export async function askFruitExpert(fruitName) {
+    // Le backend attend : { "fruit": "Apple" }
+    const response = await fetch("/chat", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ fruit: fruitName })
+    });
+
+    if (!response.ok) {
+        const text = await response.text();
+        throw new Error(`Erreur Chatbot (${response.status}): ${text}`);
+    }
+
+    return await response.json();
+}

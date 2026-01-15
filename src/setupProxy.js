@@ -1,22 +1,16 @@
 const { createProxyMiddleware } = require("http-proxy-middleware");
 
 module.exports = function (app) {
+    // 1. Docker Local (Images) - Port 5000
     app.use(
-        "/image",
+        ["/image", "/url"], // On peut grouper les routes
         createProxyMiddleware({
-            target: process.env.REACT_APP_API_PROXY || "http://localhost",
+            target: "http://localhost:5000",
             changeOrigin: true,
         })
     );
 
-    app.use(
-        "/url",
-        createProxyMiddleware({
-            target: process.env.REACT_APP_API_PROXY || "http://localhost",
-            changeOrigin: true,
-        })
-    );
-
+    // 2. Azure ML (Cloud)
     app.use(
         "/api-azure",
         createProxyMiddleware({
@@ -24,6 +18,15 @@ module.exports = function (app) {
             changeOrigin: true,
             pathRewrite: { "^/api-azure": "" },
             secure: false,
+        })
+    );
+
+    // 3. Chatbot FastAPI (Ollama) - Port 8000
+    app.use(
+        "/chat",
+        createProxyMiddleware({
+            target: "http://localhost:8000",
+            changeOrigin: true,
         })
     );
 };
