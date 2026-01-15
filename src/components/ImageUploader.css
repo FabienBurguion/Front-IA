@@ -137,3 +137,18 @@
     color: #64748b;
     text-align: center;
 }
+
+.uploader-preview-error {
+    background: #fff7ed;
+    border: 1px dashed #f97316;
+    color: #c2410c;
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+    font-size: 0.9rem;
+    max-width: 100%;
+}
+
+.uploader-preview-error p {
+    margin: 4px 0;
+}

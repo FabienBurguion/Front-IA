@@ -16,4 +16,14 @@ module.exports = function (app) {
             changeOrigin: true,
         })
     );
+
+    app.use(
+        "/api-azure",
+        createProxyMiddleware({
+            target: "https://api-fruit-conseil-v2.francecentral.inference.ml.azure.com",
+            changeOrigin: true,
+            pathRewrite: { "^/api-azure": "" },
+            secure: false,
+        })
+    );
 };
