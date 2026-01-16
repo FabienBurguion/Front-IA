@@ -132,14 +132,14 @@ export async function predictImageFromUrlAzure(imageUrl) {
 }
 
 // --- CHATBOT LLM (Local 8000) ---
-export async function askFruitExpert(fruitName) {
+export async function askFruitExpert(name) {
     // Le backend attend : { "fruit": "Apple" }
     const response = await fetch("/chat", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify({ fruit: fruitName })
+        body: JSON.stringify({ name: name })
     });
 
     if (!response.ok) {
