@@ -218,7 +218,7 @@ function App() {
                           onClick={handlePredictImage}
                           disabled={loading || (!file && !urlIsValid)}
                       >
-                        {loading ? "Analyse en cours..." : "Identifier le fruit"}
+                        {loading ? "Analyse en cours..." : "Identifier la plante / le fruit"}
                       </button>
                     </>
                 ) : (

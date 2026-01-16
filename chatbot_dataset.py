@@ -14,16 +14,6 @@ config_list = [
     }
 ]
 
-dataset_raw = """
-Apple, Pear, Banana, Beetroot, Bell pepper, Cabbage, Capsicum, Carrot, 
-Cauliflower, Chili pepper, Corn, Cucumber, Eggplant, Garlic, Ginger, 
-Grapes, Jalepeno, Kiwi, Lemon, Lettuce, Mango, Onion, Orange, Paprika, 
-Peas, Pineapple, Pomegranate, Potato, Raddish, Soy beans, Spinach, 
-SweetCorn, Sweetpotato, Tomato, Turnip, Watermelon
-"""
-
-dataset_list = [item.strip().lower() for item in dataset_raw.split(',')]
-
 botanist_prompt = """
 You are a Botanical Expert.
 Give
@@ -47,9 +37,6 @@ class ChatRequest(BaseModel):
 @app.post("/chat")
 async def chat_endpoint(request: ChatRequest):
     fruit_name = request.fruit.strip().lower()
-
-    if fruit_name not in dataset_list:
-        raise HTTPException(status_code=404, detail=f"Fruit '{fruit_name}' not in dataset.")
 
     botanist = autogen.AssistantAgent(
         name="Botanist",
