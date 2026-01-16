@@ -1,9 +1,9 @@
 const AZURE_PREDICTION_KEY = process.env.REACT_APP_AZURE_KEY;
 const AZURE_ENDPOINT = process.env.REACT_APP_AZURE_ENDPOINT;
-const CROP_API_URL = process.env.REACT_APP_CROP_API_URL;
+const AZURE_ML_REAL_URL = "https://api-fruit-conseil-v2.francecentral.inference.ml.azure.com/score";
 const CROP_API_KEY = process.env.REACT_APP_CROP_API_KEY;
 
-if (!AZURE_PREDICTION_KEY || !AZURE_ENDPOINT || !CROP_API_URL || !CROP_API_KEY) {
+if (!AZURE_PREDICTION_KEY || !AZURE_ENDPOINT || !CROP_API_KEY) {
     console.error("ERREUR: Les clés Azure sont manquantes dans le fichier .env");
 }
 
@@ -40,11 +40,13 @@ export async function predictImageFromUrlLocal(imageUrl) {
 
 // --- IA DONNÉES SOL (Formulaire Manuel) ---
 export async function predictCropRecommendation(formData) {
+    // --- FIX "Missing Input Path" ---
     const dataWithFix = {
         ...formData,
         "Path": "fictive_path"
     };
 
+    // Formatage Azure AutoML
     const columns = Object.keys(dataWithFix);
     const values = Object.values(dataWithFix);
 
@@ -56,13 +58,27 @@ export async function predictCropRecommendation(formData) {
         }
     };
 
-    console.log("Envoi corrigé vers :", CROP_API_URL);
+    // --- LOGIQUE INTELLIGENTE LOCAL vs PROD ---
+    let targetUrl;
 
-    const response = await fetch(CROP_API_URL, {
+    if (window.location.hostname === "localhost") {
+        // En LOCAL : On utilise le proxy setupProxy.js pour éviter les soucis
+        targetUrl = "/api-azure/score";
+    } else {
+        // EN PROD (Azure Static Web App) : Pas de proxy local !
+        // On utilise un "CORS Proxy" public pour contourner la sécurité du navigateur
+        // C'est l'astuce indispensable pour que ça marche sans Backend dédié.
+        targetUrl = "https://corsproxy.io/?" + encodeURIComponent(AZURE_ML_REAL_URL);
+    }
+
+    console.log("Appel vers :", targetUrl);
+
+    const response = await fetch(targetUrl, {
         method: "POST",
         headers: {
             "Authorization": "Bearer " + CROP_API_KEY,
             "Content-Type": "application/json"
+            // Pas de header deployment ici car trafic à 100%
         },
         body: JSON.stringify(payload)
     });
@@ -74,6 +90,7 @@ export async function predictCropRecommendation(formData) {
 
     const resultJSON = await response.json();
 
+    // Parsing résultat
     let cropName = "Inconnu";
     if (Array.isArray(resultJSON)) cropName = resultJSON[0];
     else if (resultJSON.Results) cropName = resultJSON.Results[0];
